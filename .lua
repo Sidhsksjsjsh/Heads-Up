@@ -1,4 +1,5 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sidhsksjsjsh/VAPE-UI-MODDED/main/.lua"))()
+local ESPLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Sidhsksjsjsh/ESP-THING/main/.lua"))()
 local wndw = lib:Window("VIP Turtle Hub V4")
 local T1 = wndw:Tab("Peek")
 local T2 = wndw:Tab("Seek")
@@ -43,5 +44,21 @@ T2:Toggle("Auto pick peeker",false,function(value)
     while wait() do
       if _G.ppeek == false then break end
       plr["#Network"]["RoundSystem"]["Pick"]:FireServer(getNearPlayer("${user.id}"))
+    end
+end)
+
+T3:Button("ESP",function()
+    for i,v in pairs(plr:GetPlayers()) do
+      ESPLib:CreateESPTag({
+          Text = "AI",
+          Part = v.Character,
+          TextSize = 7,
+          TextColor = Color3.new(255, 255, 255),
+          Highlight = true,
+          Outline = Color3.new(255,0,0),
+          EnableBoxESP = true,
+          BoxColor = Color3.new(255,255,255),
+          TracerColor = Color3.new(255,0,0)
+      })
     end
 end)
