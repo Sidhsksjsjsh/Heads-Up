@@ -7,13 +7,21 @@ local T3 = wndw:Tab("ESP")
 
 local plr = game:GetService("Players")
 local self = plr.LocalPlayer
-
+local workspace = game:GetService("Workspace")
+local camera = workspace.CurrentCamera
 local lab = T1:Label("Seeker label is disabled\npress 'Show seeker' to enable this labels")
+--[[
+camera.CameraType = "Fixed"
+notify("Camera","Fixing Camera...")
+wait(0.5)
+camera.CameraSubject = self.Character:FindFirstChildWhichIsA('Humanoid')
+camera.CameraType = "Custom"
+]]
 
 local function getNearPlayer(str)
   for i,v in pairs(plr:GetPlayers()) do
     if (self.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude < 25 then
-      return str:gsub("${user.name}",v.Name):gsub("${user.id}",v.UserId):gsub("${user.dn}",v.DisplayName):gsub("${user.pos}",v.Character.HumanoidRootPart.Position):gsub("${user.cframe}",v.Character.HumanoidRootPart.CFrame)
+      return str:gsub("${user.name}",v.Name):gsub("${user.id}",v.UserId):gsub("${user.dn}",v.DisplayName)
     end
   end
 end
@@ -28,6 +36,16 @@ T1:Toggle("Show seeker & Instant pick - AI Picker ( Seek & Peek )",false,functio
       if _G.seek == false then break end
       lab:EditLabel(getNearPlayer("user: ${user.name}\nDisplay name: ${user.dn}\nId: ${user.id}"))
       plr["#Network"]["RoundSystem"]["Pick"]:FireServer(getNearPlayer("${user.id}"))
+    end
+end)
+
+T1:Toggle("Auto change camera state",false,function(value)
+    _G.camstate = value
+    camera.CameraType = "Fixed"
+    while wait() do
+      if _G.camstate == false then break end
+      camera.CameraSubject = self.Character.Humanoid
+      camera.CameraType = "Custom"
     end
 end)
 
